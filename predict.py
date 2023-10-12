@@ -14,7 +14,7 @@ from minigpt4.conversation.conversation import CONV_VISION, Chat
 from minigpt4.common.registry import registry
 from minigpt4.common.config import Config
 from cog import BasePredictor, Input, Path
-
+from minigpt4.common.utils import download_url
 
 
 class Predictor(BasePredictor):
@@ -53,7 +53,7 @@ class Predictor(BasePredictor):
 
     def predict(
         self,
-        image: Path = Input(
+        image: str = Input(
             description="Input image to discuss"),
         message: str = Input(
             description="Message to send to MiniGPT-4.",
@@ -79,7 +79,11 @@ class Predictor(BasePredictor):
     ) -> str:
         """Run a single prediction on the model"""
         chat = self.chat
-        raw_image = Image.open(image).convert("RGB")
+        cwd = os.path.dirname(os.path.realpath(__file__))
+        image_name = image.rsplit("/", 1)[1]
+        image_path = cwd + "/images/" + image_name
+        download_url(image, cwd + "/images", image_name)
+        raw_image = Image.open(image_path).convert("RGB")
         chat_state = CONV_VISION.copy()
         img_list = []
         llm_message = chat.upload_img(raw_image, chat_state, img_list)

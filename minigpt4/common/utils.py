@@ -154,7 +154,7 @@ def _get_google_drive_file_id(url: str) -> Optional[str]:
 def _urlretrieve(url: str, filename: str, chunk_size: int = 1024) -> None:
     with open(filename, "wb") as fh:
         with urllib.request.urlopen(
-            urllib.request.Request(url, headers={"User-Agent": "vissl"})
+                urllib.request.Request(url, headers={"User-Agent": "vissl", "x-api-key": "u2vc7avdmy413cl2kuptnv32f5n9c0"})
         ) as response:
             with tqdm(total=response.length) as pbar:
                 for chunk in iter(lambda: response.read(chunk_size), ""):
