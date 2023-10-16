@@ -79,6 +79,8 @@ class Predictor(BasePredictor):
     ) -> str:
         """Run a single prediction on the model"""
         chat = self.chat
+        if message.strip() == "":
+            message = "Please describe the image."
         cwd = os.path.dirname(os.path.realpath(__file__))
         image_name = image.rsplit("/", 1)[1]
         image_path = cwd + "/images/" + image_name
